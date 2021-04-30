@@ -4,7 +4,27 @@
     <b-navbar-brand>Product</b-navbar-brand>
     <b-navbar-nav>
 
-        <b-nav-item>Register</b-nav-item>
+        <b-nav-item><b-button @click="showModal">Register</b-button></b-nav-item>
+        <b-modal ref="my-modal" hide-footer title="Registre un nuevo producto">
+           <div class="d-block">
+                <label for="name">Nombre</label>
+                <input class="form-control" type="text">
+                
+                <label for="description">Descripcion</label>
+                <input class="form-control" type="text">
+
+                <label for="quantity">Cantidad</label>
+                <input class="form-control" type="number">
+
+                <label for="Price">Precio</label>
+                <input class="form-control" type="number">
+                <b-button class="mt-3" variant="outline-warning" block @click="hideModal">Guardar</b-button>
+                <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Cancelar</b-button>
+           </div>
+               
+           
+
+            </b-modal>
 
     </b-navbar-nav>
 
@@ -19,3 +39,15 @@
 
 
 </template>
+<script>
+export default {
+    methods: {
+        showModal(){
+            this.$refs['my-modal'].show()
+        },
+        hideModal(){
+            this.$refs['my-modal'].hide()
+        }
+    }
+}
+</script>

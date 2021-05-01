@@ -1,23 +1,25 @@
 <template>
     <div class="container">
         <div class="form-add">
-
+ <b-modal ref="my-modal-edit" hide-footer title="Edite un producto">
             <form>
+               
                 <label for="name">Nombre</label>
                 <input class="form-control" type="text" v-model="product.name">
                 
                 <label for="description">Descripcion</label>
-                <input class="form-control" type="text" v-model="product.description">
+                <textarea class="form-control" type="text" v-model="product.description"></textarea>
 
                 <label for="quantity">Cantidad</label>
                 <input class="form-control" type="number" v-model="product.quantity">
 
                 <label for="Price">Precio</label>
                 <input class="form-control" type="number" v-model="product.price">
-                 <button type="submit"  class="btn btn-success" @click="addProduct()">Guardar</button>
+                 <b-button type="submit"  class="mt-3" variant="outline-success" block @click="addProductEdit()">Modificar</b-button>
                
                
                 </form>
+ </b-modal>
 
         </div>
 <center><h2><strong>Listado de productos</strong></h2></center>
@@ -42,7 +44,7 @@
                     <td>{{ product.price }}</td>
                     
                     <td><button type="button"  class="btn btn-warning text-white" @click="updateProduct(product)">Edit</button></td>
-                    <td><button type="button" class="btn btn-danger" @click="deleteProduct(product.id)">Delete</button></td>
+                    <td><button type="button" class="btn btn-danger"  @click="deleteProduct(product.id)">Delete</button></td>
 
             </tr>
         </tbody>
@@ -84,21 +86,10 @@ export default {
             })
             .catch(err=>console.log(err));
         },
-           addProduct(){
-            if(this.update===false){
-            fetch('/api/product', {
-                method: 'post',
-                body: JSON.stringify(this.product),
-                headers: {
-                    'content-type': 'application/json'
-                }
-            })
-            .then(response=>response.json())
-                .then(data=>{
-                this.getProducts();
-            })
-            .catch(err=>console.log(err));
-        }else{
+           addProductEdit(){
+            if(this.update===true){
+                
+            
             fetch('/api/product/', {
                 method: 'put',
                 body: JSON.stringify(this.product),
@@ -124,6 +115,7 @@ export default {
                     .catch(err=>console.log(err));
         },
         updateProduct(product){
+            this.$refs['my-modal-edit'].show();
             this.update=true;
             this.product.id=product.id;
             this.product.product_id= product.id;

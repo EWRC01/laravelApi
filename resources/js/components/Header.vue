@@ -13,7 +13,7 @@
                 <input class="form-control" type="text" v-model="product.name">
                 
                 <label for="description">Descripcion</label>
-                <input class="form-control" type="text" v-model="product.description">
+                <textarea class="form-control" type="text" v-model="product.description"></textarea>
 
                 <label for="quantity">Cantidad</label>
                 <input class="form-control" type="number" v-model="product.quantity">

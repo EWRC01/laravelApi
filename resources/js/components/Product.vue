@@ -1,5 +1,25 @@
 <template>
     <div class="container">
+        <div class="form-add">
+
+            <form>
+                <label for="name">Nombre</label>
+                <input class="form-control" type="text" v-model="product.name">
+                
+                <label for="description">Descripcion</label>
+                <input class="form-control" type="text" v-model="product.description">
+
+                <label for="quantity">Cantidad</label>
+                <input class="form-control" type="number" v-model="product.quantity">
+
+                <label for="Price">Precio</label>
+                <input class="form-control" type="number" v-model="product.price">
+                 <button type="submit"  class="btn btn-success" @click="addProduct()">Guardar</button>
+               
+               
+                </form>
+
+        </div>
 <center><h2><strong>Listado de productos</strong></h2></center>
 
     <table class="table table-dark" border="1.0">
@@ -21,8 +41,8 @@
                    <td>{{ product.quantity }}</td>
                     <td>{{ product.price }}</td>
                     
-                    <td><b-button type="button" class="btn btn-warning text-white">Edit</b-button></td>
-                    <td><b-button type="button" class="btn btn-danger">Delete</b-button></td>
+                    <td><button type="button"  class="btn btn-warning text-white" @click="updateProduct(product)">Edit</button></td>
+                    <td><button type="button" class="btn btn-danger" @click="deleteProduct(product.id)">Delete</button></td>
 
             </tr>
         </tbody>
@@ -63,7 +83,55 @@ export default {
                 this.products = reponse.data;
             })
             .catch(err=>console.log(err));
+        },
+           addProduct(){
+            if(this.update===false){
+            fetch('/api/product', {
+                method: 'post',
+                body: JSON.stringify(this.product),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            })
+            .then(response=>response.json())
+                .then(data=>{
+                this.getProducts();
+            })
+            .catch(err=>console.log(err));
+        }else{
+            fetch('/api/product/', {
+                method: 'put',
+                body: JSON.stringify(this.product),
+                headers: {
+                    'content-type':'application/json'
+                }
+            })
+            .then(response=>response.json())
+                .then(data=>{
+                    this.getProducts();
+                })
+                .catch(err=>console.log(err));
+        }
+        },
+        deleteProduct(id){
+                    fetch('/api/product/'+id,{
+                        method:'delete'
+                    })
+                    .then(response=>response.json())
+                    .then(data=>{
+                        this.getProducts();
+                    })
+                    .catch(err=>console.log(err));
+        },
+        updateProduct(product){
+            this.update=true;
+            this.product.id=product.id;
+            this.product.product_id= product.id;
+            this.product.name=product.name;
+            this.product.description=product.description;
+            this.product.quantity=product.quantity;
+            this.product.price=product.price;
         }
     }
-}
+};
 </script>

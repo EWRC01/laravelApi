@@ -14,7 +14,7 @@
                 <input class="form-control" type="number" v-model="product.quantity">
 
                 <label for="Price">Precio</label>
-                <input class="form-control" type="number" v-model="product.price">
+                <input class="form-control" type="number" step="any" v-model="product.price">
                  <b-button type="submit"  class="mt-3" variant="outline-success" block @click="addProductEdit()">Modificar</b-button>
                
                
@@ -28,12 +28,14 @@
         <thead>
 
             <th>ID</th>
-            <th>Name</th>
-            <th>description</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Actions</th>
-            <th>Actions</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+             <th>Total</th>
+            <th>Acciones</th>
+            <th>Acciones</th>
+           
         </thead>
         <tbody>
             <tr v-for="product in products" v-bind:key="product.id">
@@ -41,7 +43,9 @@
                  <td>{{ product.name }}</td>
                   <td>{{ product.description }}</td>
                    <td>{{ product.quantity }}</td>
-                    <td>{{ product.price }}</td>
+                    <td>{{'$' + product.price }}</td>
+                    
+                    <td>{{'$'+product.quantity*product.price}}</td>
                     
                     <td><button type="button"  class="btn btn-warning text-white" @click="updateProduct(product)">Edit</button></td>
                     <td><button type="button" class="btn btn-danger"  @click="deleteProduct(product.id)">Delete</button></td>
@@ -66,6 +70,7 @@ export default {
                 description: '',
                 quantity: '',
                 price: ''
+              
 
             },
             update:false,
@@ -97,6 +102,7 @@ export default {
                     'content-type':'application/json'
                 }
             })
+            .then(alert('Producto Editado Correctamente'))
             .then(response=>response.json())
                 .then(data=>{
                     this.getProducts();
@@ -108,6 +114,7 @@ export default {
                     fetch('/api/product/'+id,{
                         method:'delete'
                     })
+                    .then(alert('Producto Eliminado Correctamente'))
                     .then(response=>response.json())
                     .then(data=>{
                         this.getProducts();

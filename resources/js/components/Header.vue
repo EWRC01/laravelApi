@@ -1,10 +1,10 @@
 <template>
 
 <b-navbar type="dark" variant="dark">
-    <b-navbar-brand>Product</b-navbar-brand>
+    <b-navbar-brand>Productos</b-navbar-brand>
     <b-navbar-nav>
 
-        <b-nav-item><b-button @click="showModal">Register</b-button></b-nav-item>
+        <b-nav-item><b-button class="btn btn-danger" @click="showModal">Agrega un nuevo producto</b-button></b-nav-item>
         <b-modal ref="my-modal" hide-footer title="Registre un nuevo producto">
            
            <div class="d-block">
@@ -16,12 +16,12 @@
                 <textarea class="form-control" type="text" v-model="product.description"></textarea>
 
                 <label for="quantity">Cantidad</label>
-                <input class="form-control" type="number" v-model="product.quantity">
+                <input class="form-control" type="number" step="any" v-model="product.quantity">
 
                 <label for="Price">Precio</label>
                 <input class="form-control" type="number" v-model="product.price">
-                 <b-button type="submit" class="mt-3" variant="outline-danger" block @click.prevent="addProduct()">Guardar</b-button>
-                <b-button type="submit" class="mt-3" variant="outline-warning" block @click="hideModal">Cerrar</b-button>
+                 <b-button type="submit" class="mt-3" variant="outline-danger" block @click="addProduct()">Guardar</b-button>
+               
                
                 </b-form>
            </div>
@@ -79,7 +79,9 @@ export default {
             .then(response=>response.json())
             .then(response=>{
                 this.products = response.data;
+                
             })
+            
             .catch(err=>console.log(err));
         },
         addProduct(){
@@ -91,6 +93,7 @@ export default {
                     'content-type': 'application/json'
                 }
             })
+            .then(alert('Producto Guardado Correctamente'))
             .then(response=>response.json())
                 .then(data=>{
                 this.getProducts();
